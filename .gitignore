@@ -1,0 +1,21 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local env files
+.env
+.env.local
+
+# Database (Quan trọng: Không đẩy dữ liệu cá nhân lên GitHub)
+data/
+*.db
+*.db-journal
+
+# Operating System files
+.DS_Store
+Thumbs.db

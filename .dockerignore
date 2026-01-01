@@ -1,0 +1,17 @@
+# Tránh copy node_modules từ máy local vào Docker
+node_modules
+npm-debug.log
+
+# Tránh copy dữ liệu database local vào image
+data
+*.db
+
+# Tránh các file Git
+.git
+.gitignore
+
+# Các file rác khác
+.DS_Store
+README.md
+docker-compose.yml
+Dockerfile
