@@ -1,0 +1,12 @@
+services:
+  mininote:
+    build: .
+    container_name: mini-note-app
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - MASTER_PASSWORD=your_secure_password_here
+      - NODE_ENV=production
+    restart: always
