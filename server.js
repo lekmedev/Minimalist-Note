@@ -77,6 +77,22 @@ app.post('/api/note/:id/unlock-permanently', (req, res) => {
   });
 });
 
+app.post('/api/admin/check', (req, res) => {
+  const { password } = req.body;
+  if (password === MASTER_PASSWORD) res.json({ success: true });
+  else res.status(401).json({ success: false });
+});
+
+app.post('/api/admin/notes', (req, res) => {
+  const { password } = req.body;
+  if (password !== MASTER_PASSWORD) return res.status(403).json({ error: 'Unauthorized' });
+  
+  db.all("SELECT id, (password IS NOT NULL) as isLocked FROM notes", (err, rows) => {
+    if (err) res.status(500).json({ error: err.message });
+    else res.json(rows);
+  });
+});
+
 app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
