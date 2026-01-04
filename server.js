@@ -21,12 +21,12 @@ db.serialize(() => {
 app.get('/api/note/:id', (req, res) => {
   db.get("SELECT (password IS NOT NULL) as isLocked FROM notes WHERE id = ?", [req.params.id], (err, row) => {
     if (err) return res.status(500).json({ error: err.message });
-    
+
     if (row && row.isLocked) {
       // TUYỆT ĐỐI KHÔNG gửi content ở đây
       return res.json({ isLocked: true });
     }
-    
+
     db.get("SELECT content FROM notes WHERE id = ?", [req.params.id], (err, contentRow) => {
       res.json({ content: contentRow ? contentRow.content : "", isLocked: false });
     });
@@ -35,11 +35,11 @@ app.get('/api/note/:id', (req, res) => {
 
 app.post('/api/note/:id', (req, res) => {
   const { content } = req.body;
-  db.run(`INSERT INTO notes (id, content) VALUES (?, ?) ON CONFLICT(id) DO UPDATE SET content = excluded.content`, 
-  [req.params.id, content], (err) => {
-    if (err) res.status(500).json({ error: err.message });
-    else res.json({ success: true });
-  });
+  db.run(`INSERT INTO notes (id, content) VALUES (?, ?) ON CONFLICT(id) DO UPDATE SET content = excluded.content`,
+    [req.params.id, content], (err) => {
+      if (err) res.status(500).json({ error: err.message });
+      else res.json({ success: true });
+    });
 });
 
 app.post('/api/note/:id/password', (req, res) => {
@@ -54,7 +54,7 @@ app.post('/api/note/:id/password', (req, res) => {
 // API: Mở khóa - Trả về content sau khi verify thành công
 app.post('/api/note/:id/unlock', (req, res) => {
   const { password } = req.body;
-  
+
   if (password === MASTER_PASSWORD) {
     db.get("SELECT content FROM notes WHERE id = ?", [req.params.id], (err, row) => {
       res.json({ success: true, content: row ? row.content : "", isAdmin: true });
@@ -86,8 +86,8 @@ app.post('/api/admin/check', (req, res) => {
 app.post('/api/admin/notes', (req, res) => {
   const { password } = req.body;
   if (password !== MASTER_PASSWORD) return res.status(403).json({ error: 'Unauthorized' });
-  
-  db.all("SELECT id, (password IS NOT NULL) as isLocked FROM notes", (err, rows) => {
+
+  db.all("SELECT id, (password IS NOT NULL) as isLocked FROM notes WHERE content IS NOT NULL AND content != ''", (err, rows) => {
     if (err) res.status(500).json({ error: err.message });
     else res.json(rows);
   });
