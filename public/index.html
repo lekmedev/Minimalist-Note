@@ -112,19 +112,20 @@
             fill: none;
         }
 
-        textarea {
-            flex: 1;
-            width: 100%;
-            border: none;
-            outline: none;
-            background: transparent;
-            color: var(--text);
-            font-size: 1.2rem;
-            line-height: 1.8;
-            resize: none;
-            padding: 20px 0;
-            font-family: inherit;
-        }
+		textarea {
+			flex: 1;
+			width: 100%;
+			/* border: none; */
+			outline: none;
+			background: transparent;
+			color: var(--text);
+			font-size: 1.2rem;
+			line-height: 1.8;
+			resize: none;
+			padding: 19px;
+			font-family: inherit;
+			border-radius: .5rem;
+		}
 
         .actions {
             position: fixed;
@@ -451,7 +452,9 @@
                 item.style.alignItems = 'center';
                 item.style.cursor = 'pointer';
                 item.style.background = 'var(--input-bg)';
-                item.onclick = () => window.location.href = '/' + n.id;
+                item.onclick = () => {
+				  window.open('/' + n.id, '_blank');
+				};
 
                 const title = document.createElement('div');
                 title.innerHTML = `<b>/${n.id}</b> ${n.isLocked ? '🔒' : ''}`;
