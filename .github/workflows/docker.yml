@@ -37,3 +37,9 @@ jobs:
             thn05/mini-note:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      # --- ĐOẠN THÊM MỚI VÀO ĐÂY ---
+      - name: Trigger Coolify Deployment
+        run: |
+          curl -X GET "https://clf.8biz.net/api/v1/deploy?uuid=${{ secrets.COOLIFY_UUID }}&force=true" \
+               -H "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}"
