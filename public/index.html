@@ -410,7 +410,7 @@
             showToast("Đã lưu");
         }
 
-        ed.oninput = () => { ui('typing'); clearTimeout(timer); timer = setTimeout(save, 1200); };
+        ed.oninput = () => { clearTimeout(timer); timer = setTimeout(save, 1200); };
 
         async function submitNewPw() {
             const p = document.getElementById('pw-new').value;
