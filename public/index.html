@@ -385,12 +385,7 @@
         }
 		const savedTheme = localStorage.getItem('theme');
 
-		if (savedTheme === 'light') {
-			themeIcon.innerHTML = moonIcon;
-		} else {
-			document.body.classList.add('dark');
-			themeIcon.innerHTML = sunIcon;
-		}
+
 
         function showToast(msg) {
             toast.innerText = msg; toast.classList.add('show');
@@ -399,22 +394,18 @@
         function openModal(m) { document.getElementById(m).style.display = 'flex'; if (m === 'overlay-set-pw') document.getElementById('pw-new').focus(); }
         function closeModal(m) { document.getElementById(m).style.display = 'none'; }
 
-        function ui(state) {
-            st.classList.add('v');
-            if (state === 'typing') { sd.classList.remove('a'); stx.innerText = 'Đang soạn...'; }
-            else { sd.classList.add('a'); stx.innerText = 'Đã lưu'; setTimeout(() => st.classList.remove('v'), 2000); }
-        }
+
 
         async function load() {
             const r = await fetch(`/api/note/${id}`);
             const d = await r.json();
             if (d.isLocked) { document.getElementById('overlay-lock').style.display = 'flex'; document.getElementById('pw-unlock').focus(); }
-            else { ed.value = d.content || ''; ed.focus(); if (d.content) ui('ok'); }
+            else { ed.value = d.content || ''; ed.focus(); }
         }
 
         async function save() {
             await fetch(`/api/note/${id}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content: ed.value }) });
-            ui('ok');
+            showToast("Đã lưu");
         }
 
         ed.oninput = () => { ui('typing'); clearTimeout(timer); timer = setTimeout(save, 1200); };
